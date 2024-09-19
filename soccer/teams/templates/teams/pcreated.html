@@ -1,0 +1,168 @@
+<!-- success.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Created Successfully</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #2C3E50;
+            color: #FFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #FFF;
+            background-color: #27AE60;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #2ECC71;
+            transform: scale(1.05);
+        }
+
+        .btn.secondary {
+            background-color: #2980B9;
+        }
+
+        .btn.secondary:hover {
+            background-color: #3498DB;
+        }
+
+        /* Ball animation */
+        .ball {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Football_%28soccer_ball%29.svg/1024px-Football_%28soccer_ball%29.svg.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            border-radius: 50%;
+            top: -70px;
+            left: calc(50% - 25px);
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(30px);
+            }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background-color: #FFF;
+            border-radius: 50%;
+            opacity: 0;
+            animation: confetti 3s ease-in-out infinite;
+        }
+
+        @keyframes confetti {
+            0% {
+                transform: translateX(-50px) translateY(-50px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(50vw - 50px)) translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .confetti:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .confetti:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .confetti:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+
+        .confetti:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+
+        .confetti:nth-child(6) {
+            animation-delay: 1s;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="ball"></div>
+        <h1>Player Created Successfully!</h1>
+        <div class="message">
+            <p>Your player has been added to the team roster.</p>
+        </div>
+        <div class="button-group">
+            <a href="{% url 'teams:player' %}" class="btn">Add Another Player</a>
+            <a href="{% url 'teams:players' %}?gender=M" class="btn secondary">View Players</a>
+        </div>
+        <!-- Confetti animation -->
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+        <div class="confetti"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!-- show_teams.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formed Teams</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1A2B3C;
+            color: #FFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            color: #ECF0F1;
+        }
+
+        .teams-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .team {
+            width: 48%;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .team h2 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #ECF0F1;
+        }
+
+        .player-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .player-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .player-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #3498DB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: #FFF;
+            margin-right: 15px;
+        }
+
+        .player-info {
+            flex-grow: 1;
+        }
+
+        .player-info h3 {
+            margin-bottom: 5px;
+            font-size: 1.2em;
+            color: #2C3E50;
+        }
+
+        .player-info p {
+            margin-bottom: 3px;
+            font-size: 0.9em;
+            color: #7F8C8D;
+        }
+
+        .player-skill {
+            font-weight: bold;
+            color: #27AE60;
+        }
+
+        .highlight {
+            background: #27AE60;
+            color: #FFF;
+            padding: 3px 6px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-right: 5px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #FFF;
+            background-color: #2980B9;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 250px;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: #3498DB;
+            transform: scale(1.05);
+        }
+
+        .btn.secondary {
+            background-color: #E74C3C;
+        }
+
+        .btn.secondary:hover {
+            background-color: #C0392B;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .teams-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .team {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .player-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .player-image {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Formed Teams</h1>
+        <div class="teams-container">
+            <!-- Team 1 -->
+            <div class="team">
+                <h2>Team 1</h2>
+                {% for player in team_one.players.all %}
+                    <div class="player-card">
+                        <div class="player-image">
+                            {{ player.name|slice:":1" }}
+                        </div>
+                        <div class="player-info">
+                            <h3>{{ player.name }}</h3>
+                            <p><span class="highlight">Skill Rate:</span> {{ player.skill_rating }}</p>
+                            <p><span class="highlight">Preferred Position:</span> {{ player.preferred_position }}</p>
+                            <p><span class="highlight">Secondary Position:</span> {{ player.secondary_position }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No players in this team.</p>
+                {% endfor %}
+            </div>
+            <!-- Team 2 -->
+            <div class="team">
+                <h2>Team 2</h2>
+                {% for player in team_two.players.all %}
+                    <div class="player-card">
+                        <div class="player-image">
+                            {{ player.name|slice:":1" }}
+                        </div>
+                        <div class="player-info">
+                            <h3>{{ player.name }}</h3>
+                            <p><span class="highlight">Skill Rate:</span> {{ player.skill_rating }}</p>
+                            <p><span class="highlight">Preferred Position:</span> {{ player.preferred_position }}</p>
+                            <p><span class="highlight">Secondary Position:</span> {{ player.secondary_position }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No players in this team.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

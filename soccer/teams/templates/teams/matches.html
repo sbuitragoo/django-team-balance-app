@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soccer Match Viewer</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #1A2B3C;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .card {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            background-color: #fff;
+            margin-bottom: 20px;
+            border: none;
+        }
+        .card-header {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3a506b;
+        }
+        .card-body {
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .team-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .team-list li {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #3a506b;
+        }
+        .match-result {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        .badge {
+            font-size: 1.2rem;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .badge-primary {
+            background-color: #007bff;
+        }
+        .badge-secondary {
+            background-color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-calendar-event"></i> Match Viewer
+            </div>
+            <div class="card-body">
+                <!-- Date Selector -->
+                <div class="mb-3">
+                    <label for="match-date-selector" class="form-label">Select Match Date</label>
+                    <form method="GET" action="{% url 'teams:matches' %}">
+                        <select class="form-select" name="match_id" id="match-date-selector" onchange="this.form.submit()">
+                            <option value="">Choose a date</option>
+                            {% for match in matches %}
+                                <option value="{{ match.id }}" {% if match.id == selected_match.id %}selected{% endif %}>{{ match.match_date|date:"Y-m-d H:i" }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+
+                {% if selected_match %}
+                <!-- Match Info Display -->
+                <div id="match-info" class="mt-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="bi bi-trophy"></i> Match Result
+                        </div>
+                        <div class="card-body">
+                            <div class="match-result">
+                                <span class="badge badge-primary">{{ selected_match.score.team_one_score }}</span>
+                                <span class="badge badge-secondary">{{ selected_match.score.team_two_score }}</span>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <h6>Team 1</h6>
+                                    <ul class="team-list">
+                                        {% for player in selected_match.teams.all.0.players.all %}
+                                            <li>{{ player.name }} ({{ player.preferred_position }})</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Team 2</h6>
+                                    <ul class="team-list">
+                                        {% for player in selected_match.teams.all.1.players.all %}
+                                            <li>{{ player.name }} ({{ player.preferred_position }})</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!-- select_players.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Players for Team Split</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #2C3E50;
+            color: #FFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            color: #ECF0F1;
+        }
+
+        .instructions {
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #7F8C8D;
+        }
+
+        .card-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: 15px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card.selected {
+            background: #27AE60;
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .player-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #2980B9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: #FFF;
+            margin-right: 20px;
+        }
+
+        .player-info {
+            flex-grow: 1;
+        }
+
+        .player-info h2 {
+            margin-bottom: 5px;
+            font-size: 1.5em;
+            color: #34495E;
+        }
+
+        .player-info p {
+            margin-bottom: 5px;
+            font-size: 1em;
+            color: #7F8C8D;
+        }
+
+        .player-skill {
+            font-weight: bold;
+            color: #27AE60;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1em;
+            font-weight: 500;
+            color: #FFF;
+            background-color: #2980B9;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 250px;
+            margin: 20px auto 0;
+            display: block;
+        }
+
+        .btn:hover {
+            background-color: #3498DB;
+            transform: scale(1.05);
+        }
+
+        .btn.secondary {
+            background-color: #E74C3C;
+        }
+
+        .btn.secondary:hover {
+            background-color: #C0392B;
+        }
+
+        .checkbox {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+
+        .checkbox input[type="checkbox"] {
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            background: none;
+            border: 2px solid #27AE60;
+            border-radius: 5px;
+        }
+
+        .checkbox input[type="checkbox"]:checked {
+            background-color: #27AE60;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .player-image {
+                margin-bottom: 10px;
+            }
+
+            .card-list {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Select Players for Team Split</h1>
+        <div class="instructions">
+            <p>Select the players you want to include in the team split and click "Split Teams".</p>
+        </div>
+        <form action="{% url 'teams:split_teams' %}" method="POST">
+            {% csrf_token %}
+            <div class="card-list">
+                {% for player in players %}
+                    <label class="card">
+                        <div class="checkbox">
+                            <input type="checkbox" name="selected_players" value="{{ player.id }}">
+                        </div>
+                        <div class="player-image">
+                            {{ player.name|slice:":1" }} <!-- Initial letter as avatar -->
+                        </div>
+                        <div class="player-info">
+                            <h2>{{ player.name }}</h2>
+                            <p><span class="player-skill">Skill Rate:</span> {{ player.skill_rating }}</p>
+                            <p><span class="player-skill">Preferred Position:</span> {{ player.preferred_position }}</p>
+                            <p><span class="player-skill">Secondary Position:</span> {{ player.secondary_position }}</p>
+                        </div>
+                    </label>
+                {% empty %}
+                    <p>No players in the roster. <a href="{% url 'teams:player' %}" class="btn">Add a Player</a></p>
+                {% endfor %}
+            </div>
+            <a type="button" href="{% url 'teams:home' %}" class="btn">Back to Home</a>
+            <button type="submit" class="btn">Split Teams</button>
+        </form>
+    </div>
+    <script>
+        // Script to toggle selected class on card click
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+            });
+        });
+    </script>
