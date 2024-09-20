@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soccer Match Viewer</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom Styles -->
     <style>
         body {
             background-color: #1A2B3C;
@@ -77,6 +75,19 @@
             background-color: #6c757d;
         }
     </style>
+    <script>
+        function toggleScoreForm() {
+            var form = document.getElementById("score-update-form");
+            var button = document.getElementById("update-button");
+            if (form.style.display === "none") {
+                form.style.display = "block";
+                button.style.display = "none";
+            } else {
+                form.style.display = "none";
+                button.style.display = "block";
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -85,7 +96,6 @@
                 <i class="bi bi-calendar-event"></i> Match Viewer
             </div>
             <div class="card-body">
-                <!-- Date Selector -->
                 <div class="mb-3">
                     <label for="match-date-selector" class="form-label">Select Match Date</label>
                     <form method="GET" action="{% url 'teams:matches' %}">
@@ -99,7 +109,6 @@
                 </div>
 
                 {% if selected_match %}
-                <!-- Match Info Display -->
                 <div id="match-info" class="mt-4">
                     <div class="card">
                         <div class="card-header">
@@ -110,6 +119,22 @@
                                 <span class="badge badge-primary">{{ selected_match.score.team_one_score }}</span>
                                 <span class="badge badge-secondary">{{ selected_match.score.team_two_score }}</span>
                             </div>
+                            <button id="update-button" class="btn btn-primary mt-3" onclick="toggleScoreForm()">Update Score</button>
+                            <form id="score-update-form" method="POST" action="{% url 'teams:update_score' selected_match.id %}" style="display: none;">
+                                {% csrf_token %}
+                                <div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <h6>Update Team 1 Score</h6>
+                                        <input type="number" name="team_one_score" class="form-control mb-3" min="0" value="{{ selected_match.score.team_one_score }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Update Team 2 Score</h6>
+                                        <input type="number" name="team_two_score" class="form-control mb-3" min="0" value="{{ selected_match.score.team_two_score }}">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                                <button type="button" class="btn btn-secondary mt-3" onclick="toggleScoreForm()">Cancel</button>
+                            </form>
                             <div class="row mt-4">
                                 <div class="col-md-6">
                                     <h6>Team 1</h6>
@@ -128,6 +153,7 @@
                                     </ul>
                                 </div>
                             </div>
+                            <a id="update-button" class="btn btn-primary mt-3" href="{% url 'teams:home' %}">Back to Home</a>
                         </div>
                     </div>
                 </div>
@@ -136,7 +162,6 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS Bundle -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,14 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 from django.template import loader
 from django.utils import timezone
-from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse
 
 from .models import Player, Team, Match, Score
 from .utils.split import Assigner
 from .utils.split import Player as PlayerClass
-
-import json
 
 def home(request):
     template = loader.get_template("teams/home.html")
@@ -99,3 +98,16 @@ def get_matches(request):
         'selected_match': selected_match,
     }
     return HttpResponse(template.render(context, request))
+
+def update_score(request, match_id):
+    if request.method == 'POST':
+        match = get_object_or_404(Match, id=match_id)
+        team_one_score = request.POST.get('team_one_score')
+        team_two_score = request.POST.get('team_two_score')
+
+        match.score.team_one_score = team_one_score
+        match.score.team_two_score = team_two_score
+        match.score.save()
+        url = f"{reverse('teams:matches')}?match_id={match_id}"
+        return redirect(url)
+    return HttpResponse(status=400)

@@ -1,4 +1,3 @@
-<!-- show_teams.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +6,6 @@
     <title>Formed Teams</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* Basic reset */
         * {
             margin: 0;
             padding: 0;
@@ -158,7 +156,6 @@
             background-color: #C0392B;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .teams-container {
                 flex-direction: column;
@@ -185,7 +182,6 @@
     <div class="container">
         <h1>Formed Teams</h1>
         <div class="teams-container">
-            <!-- Team 1 -->
             <div class="team">
                 <h2>Team 1</h2>
                 {% for player in team_one.players.all %}
@@ -204,7 +200,6 @@
                     <p>No players in this team.</p>
                 {% endfor %}
             </div>
-            <!-- Team 2 -->
             <div class="team">
                 <h2>Team 2</h2>
                 {% for player in team_two.players.all %}

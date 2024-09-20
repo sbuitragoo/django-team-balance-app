@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create New Player</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom Styles -->
     <style>
         body {
             min-height: 100vh;
@@ -66,7 +64,7 @@
 
                 <div class="mb-3">
                     <label for="skill-rate" class="form-label">Player Skill Rate</label>
-                    <input type="number" class="form-range" min="1" max="5" step="0.1" id="skill" name="skill" placeholder="Enter skill rate" required>
+                    <input type="number" class="form-control" min="1" max="5" step="0.1" id="skill" name="skill" placeholder="Enter skill rate" required>
                 </div>
 
                 <div class="mb-3">
@@ -107,9 +105,7 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS Bundle -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <!-- Optional: Form validation -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var form = document.querySelector('form');
